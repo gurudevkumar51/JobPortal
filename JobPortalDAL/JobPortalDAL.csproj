@@ -63,12 +63,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\BaseRepository.cs" />
+    <Compile Include="Entity\MasterEntities\Currency.cs" />
+    <Compile Include="Entity\MasterEntities\EmplopyerIndustry.cs" />
+    <Compile Include="Entity\MasterEntities\JobType.cs" />
+    <Compile Include="Entity\MasterEntities\Skill.cs" />
+    <Compile Include="Entity\MasterEntities\SocialMedia.cs" />
+    <Compile Include="Entity\MasterEntities\UserRole.cs" />
+    <Compile Include="Entity\User.cs" />
     <Compile Include="Mapper\Mapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Common\" />
-    <Folder Include="Entity\" />
     <Folder Include="Manager\" />
   </ItemGroup>
   <ItemGroup>
