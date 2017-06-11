@@ -54,6 +54,7 @@
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -63,12 +64,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataAccess\BaseRepository.cs" />
+    <Compile Include="Entity\EducationDetails.cs" />
+    <Compile Include="Entity\EmployerProfile.cs" />
+    <Compile Include="Entity\ExperienceDetails.cs" />
+    <Compile Include="Entity\Job.cs" />
+    <Compile Include="Entity\JobActivity.cs" />
     <Compile Include="Entity\MasterEntities\Currency.cs" />
     <Compile Include="Entity\MasterEntities\EmplopyerIndustry.cs" />
     <Compile Include="Entity\MasterEntities\JobType.cs" />
     <Compile Include="Entity\MasterEntities\Skill.cs" />
     <Compile Include="Entity\MasterEntities\SocialMedia.cs" />
     <Compile Include="Entity\MasterEntities\UserRole.cs" />
+    <Compile Include="Entity\SeekerProfile.cs" />
+    <Compile Include="Entity\SocialMediaProfiles.cs" />
     <Compile Include="Entity\User.cs" />
     <Compile Include="Mapper\Mapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
