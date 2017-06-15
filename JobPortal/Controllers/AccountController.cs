@@ -7,12 +7,21 @@ using JobPortalDAL.Entity;
 using Newtonsoft.Json;
 using System.Web.Security;
 using JobPortalDAL.Common;
+using JobPortalDAL.DataAccess;
+using JobPortalDAL.Manager;
 
 namespace JobPortal.Controllers
-{
+{    
     [Authorize]
     public class AccountController : Controller
     {
+        private IAccount acc;
+
+        public AccountController()
+        {
+            acc = new AccountRepository();
+        }
+
         [AllowAnonymous]
         public ActionResult login(string returnUrl)
         {
@@ -28,12 +37,12 @@ namespace JobPortal.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]        
         public ActionResult login(Login lgn, string returnUrl)
         {
             string message = "";
-            //var v = Umng.login(lgn);
-            var v = new User();
+            var v = acc.Login();
+           // var v = new User();
             if (v != null)
             {
                 var json = JsonConvert.SerializeObject(v);
@@ -54,7 +63,7 @@ namespace JobPortal.Controllers
                 }
                 else
                 {
-                    return RedirectToAction("PerformanceChart", "ExcellProcess");
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else

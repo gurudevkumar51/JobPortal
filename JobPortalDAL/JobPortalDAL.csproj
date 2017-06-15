@@ -51,7 +51,11 @@
     <Reference Include="Microsoft.Practices.ObjectBuilder2, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Practices.EnterpriseLibrary.2008.4.1\lib\Microsoft.Practices.ObjectBuilder2.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -63,12 +67,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\GenericClass.cs" />
+    <Compile Include="DataAccess\AccountRepository.cs" />
     <Compile Include="DataAccess\BaseRepository.cs" />
+    <Compile Include="Entity\ChangePassword.cs" />
     <Compile Include="Entity\EducationDetails.cs" />
     <Compile Include="Entity\EmployerProfile.cs" />
     <Compile Include="Entity\ExperienceDetails.cs" />
     <Compile Include="Entity\Job.cs" />
     <Compile Include="Entity\JobActivity.cs" />
+    <Compile Include="Entity\Login.cs" />
     <Compile Include="Entity\MasterEntities\Currency.cs" />
     <Compile Include="Entity\MasterEntities\EmplopyerIndustry.cs" />
     <Compile Include="Entity\MasterEntities\JobType.cs" />
@@ -77,14 +85,14 @@
     <Compile Include="Entity\MasterEntities\UserRole.cs" />
     <Compile Include="Entity\SeekerProfile.cs" />
     <Compile Include="Entity\SocialMediaProfiles.cs" />
+    <Compile Include="Entity\Token.cs" />
     <Compile Include="Entity\User.cs" />
+    <Compile Include="Manager\IAccount.cs" />
     <Compile Include="Mapper\Mapper.cs" />
+    <Compile Include="Mapper\SeekerMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Common\" />
-    <Folder Include="Manager\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
