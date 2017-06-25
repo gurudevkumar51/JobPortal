@@ -42,7 +42,6 @@ namespace JobPortal.Controllers
         {
             string message = "";
             var v = acc.Login();
-           // var v = new User();
             if (v != null)
             {
                 var json = JsonConvert.SerializeObject(v);
