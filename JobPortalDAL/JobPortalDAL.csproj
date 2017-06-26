@@ -70,6 +70,7 @@
     <Compile Include="Common\GenericClass.cs" />
     <Compile Include="DataAccess\AccountRepository.cs" />
     <Compile Include="DataAccess\BaseRepository.cs" />
+    <Compile Include="DataAccess\JobRepository.cs" />
     <Compile Include="Entity\ChangePassword.cs" />
     <Compile Include="Entity\EducationDetails.cs" />
     <Compile Include="Entity\EmployerProfile.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Entity\Token.cs" />
     <Compile Include="Entity\User.cs" />
     <Compile Include="Manager\IAccount.cs" />
+    <Compile Include="Manager\IJob.cs" />
     <Compile Include="Mapper\Mapper.cs" />
     <Compile Include="Mapper\SeekerMapper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
