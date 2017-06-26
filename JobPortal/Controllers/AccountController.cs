@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -42,6 +42,7 @@ namespace JobPortal.Controllers
         {
             string message = "";
             var v = acc.Login();
+           // var v = new User();
             if (v != null)
             {
                 var json = JsonConvert.SerializeObject(v);
@@ -122,4 +123,3 @@ namespace JobPortal.Controllers
             }
         }
     }
-}

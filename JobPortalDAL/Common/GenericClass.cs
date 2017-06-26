@@ -73,7 +73,7 @@ namespace JobPortalDAL.Common
             }
         }
 
-        public static string CallApi(string url, string token)
+        public async static Task<string> CallApi(string url, string token)
         {
             ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             using (var client = new HttpClient())
@@ -85,8 +85,12 @@ namespace JobPortalDAL.Common
                     client.DefaultRequestHeaders.Clear();
                     client.DefaultRequestHeaders.Add("Authorization", "Bearer " + t.access_token);
                 }
-                var response = client.GetAsync(url).Result;
-                return response.Content.ReadAsStringAsync().Result;
+                var response = await client.GetAsync(url);
+                if(response.IsSuccessStatusCode)
+                {
+                    return response.Content.ReadAsStringAsync().Result;
+                }
+                return string.Empty;
             }
         }
 
