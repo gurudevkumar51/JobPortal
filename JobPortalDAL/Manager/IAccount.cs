@@ -8,6 +8,6 @@ namespace JobPortalDAL.Manager
 {
     public interface IAccount
     {
-        string Login();
+        string Login(string username, string pass);
     }
 }

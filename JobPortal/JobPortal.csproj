@@ -301,6 +301,8 @@
     <Content Include="Scripts\LoginThemeJS\login-4.js" />
     <Content Include="Scripts\LoginThemeJS\login-4.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\SweetAlert\sweetalert-dev.min.js" />
+    <Content Include="Scripts\SweetAlert\sweetalert.min.css" />
     <Content Include="Scripts\uniform\css\uniform.default.css" />
     <Content Include="Scripts\uniform\css\uniform.default.min.css" />
     <Content Include="Scripts\uniform\images\bg-input-focus.png" />
@@ -342,6 +344,7 @@
     <Content Include="Scripts\jquery-1.11.3.min.map" />
     <Content Include="Views\Account\login.cshtml" />
     <Content Include="Views\Home\JobList.cshtml" />
+    <Content Include="Views\Employer\AddJob.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

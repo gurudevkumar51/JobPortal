@@ -9,6 +9,7 @@ using System.Web.Security;
 using JobPortalDAL.Common;
 using JobPortalDAL.DataAccess;
 using JobPortalDAL.Manager;
+using System.Configuration;
 
 namespace JobPortal.Controllers
 {
@@ -19,7 +20,7 @@ namespace JobPortal.Controllers
 
         public AccountController()
         {
-            acc = new AccountRepository();
+            acc = new AccountRepository();            
         }
 
         [AllowAnonymous]
@@ -41,8 +42,11 @@ namespace JobPortal.Controllers
         public ActionResult login(Login lgn, string returnUrl)
         {
             string message = "";
-            var v = acc.Login();
-            // var v = new User();
+            
+            var token = JsonConvert.DeserializeObject<Token>(acc.Login(lgn.EmailId, lgn.Password));
+            token.userName = lgn.EmailId;
+            var v = Session["token"] = token.access_token;
+
             if (v != null)
             {
                 var json = JsonConvert.SerializeObject(v);
@@ -119,6 +123,7 @@ namespace JobPortal.Controllers
             }
             else
             {
+                
                 return Json(new { success = false, responseText = msg }, JsonRequestBehavior.AllowGet);
             }
         }

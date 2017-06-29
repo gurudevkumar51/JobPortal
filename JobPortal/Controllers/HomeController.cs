@@ -33,13 +33,13 @@ namespace JobPortal.Controllers
         public async Task<ActionResult> Jobs()
         {
             var allJobs = await jb.GetAllJobs();
-            return View("Index");
+            return Json(allJobs, JsonRequestBehavior.AllowGet);
         }
 
         public async Task<ActionResult> SeekerCount()
         {
             var Count = await jb.SeekerCount();
-            return View("Index");
+            return Json(Count, JsonRequestBehavior.AllowGet);
         }
     }
 }

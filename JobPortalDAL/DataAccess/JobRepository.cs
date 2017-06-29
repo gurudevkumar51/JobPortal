@@ -9,14 +9,15 @@ using System.Net.Http.Headers;
 using Newtonsoft.Json;
 using JobPortalDAL.Entity;
 using JobPortalDAL.Common;
+using System.Configuration;
 
 namespace JobPortalDAL.DataAccess
 {
     public class JobRepository : IJob
     {
         //HttpClient client;
-        string url = "http://jobs.webphonix.com";
-
+        
+        public static string url = ConfigurationManager.AppSettings["ApiUrl"].ToString();
         //public JobRepository()
         //{
         //    client = new HttpClient();
@@ -40,7 +41,7 @@ namespace JobPortalDAL.DataAccess
 
         public async Task<string> SeekerCount()
         {
-            url += "/api/User/SeekerCount";
+            url += "api/User/SeekerCount";
             var responseData = await GenericClass.CallApi(url, null);
 
             if (responseData != string.Empty)

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -12,6 +13,8 @@ namespace JobPortalDAL.Common
 {
     public static class GenericClass
     {
+        public static string ApiUrl = ConfigurationManager.AppSettings["ApiUrl"].ToString();
+
         public static string Hash(string value)
         {
             return Convert.ToBase64String(
@@ -80,10 +83,11 @@ namespace JobPortalDAL.Common
             {
                 if (!string.IsNullOrWhiteSpace(token))
                 {
-                    var t = JsonConvert.DeserializeObject<Token>(token);
+                    //var t = JsonConvert.DeserializeObject<Token>(token);
 
                     client.DefaultRequestHeaders.Clear();
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + t.access_token);
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                    
                 }
                 var response = await client.GetAsync(url);
                 if(response.IsSuccessStatusCode)
