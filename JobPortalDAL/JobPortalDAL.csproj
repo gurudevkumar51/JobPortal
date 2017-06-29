@@ -69,7 +69,6 @@
   <ItemGroup>
     <Compile Include="Common\GenericClass.cs" />
     <Compile Include="DataAccess\AccountRepository.cs" />
-    <Compile Include="DataAccess\BaseRepository.cs" />
     <Compile Include="DataAccess\JobRepository.cs" />
     <Compile Include="Entity\ChangePassword.cs" />
     <Compile Include="Entity\EducationDetails.cs" />

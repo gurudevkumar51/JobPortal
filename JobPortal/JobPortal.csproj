@@ -151,6 +151,7 @@
     <Content Include="images\LoginBG\LogoWebphonix.png" />
     <Content Include="images\LoginBG\twitter.png" />
     <Content Include="images\LoginBG\WebphonixLogo.png" />
+    <Content Include="images\LogoWebphonix.png" />
     <Content Include="images\overlay-icon.png" />
     <Content Include="images\people19.png" />
     <Content Include="images\portlet-collapse-icon-white.png" />
@@ -340,6 +341,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.11.3.min.map" />
     <Content Include="Views\Account\login.cshtml" />
+    <Content Include="Views\Home\JobList.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

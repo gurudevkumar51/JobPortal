@@ -24,9 +24,21 @@ namespace JobPortal.Controllers
             return View();
         }
 
+        // GET: Home
+        public ActionResult JobList()
+        {
+            return View();
+        }
+
         public async Task<ActionResult> Jobs()
         {
             var allJobs = await jb.GetAllJobs();
+            return View("Index");
+        }
+
+        public async Task<ActionResult> SeekerCount()
+        {
+            var Count = await jb.SeekerCount();
             return View("Index");
         }
     }

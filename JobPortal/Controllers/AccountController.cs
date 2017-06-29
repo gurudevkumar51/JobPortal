@@ -11,7 +11,7 @@ using JobPortalDAL.DataAccess;
 using JobPortalDAL.Manager;
 
 namespace JobPortal.Controllers
-{    
+{
     [Authorize]
     public class AccountController : Controller
     {
@@ -37,12 +37,12 @@ namespace JobPortal.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]        
+        [ValidateAntiForgeryToken]
         public ActionResult login(Login lgn, string returnUrl)
         {
             string message = "";
             var v = acc.Login();
-           // var v = new User();
+            // var v = new User();
             if (v != null)
             {
                 var json = JsonConvert.SerializeObject(v);
@@ -51,7 +51,7 @@ namespace JobPortal.Controllers
                 {
                     HttpCookie cookie = new HttpCookie("MrLogin", json);
                     cookie.Values.Add("Email", lgn.EmailId);
-                    cookie.Values.Add("Password", lgn.Password);                    
+                    cookie.Values.Add("Password", lgn.Password);
                     cookie.Expires.AddDays(15);
                     Response.Cookies.Add(cookie);
                 }
@@ -95,7 +95,7 @@ namespace JobPortal.Controllers
         {
             var msg = "";
             accnt.Password = GenericClass.Hash(accnt.Password);
-            var flag =false;// Umng.RegisterUser(accnt, out msg);
+            var flag = false;// Umng.RegisterUser(accnt, out msg);
             if (flag == true)
             {
                 var pp = "User registered successfully!";
@@ -118,8 +118,9 @@ namespace JobPortal.Controllers
                 return Json(new { success = true, responseText = pp }, JsonRequestBehavior.AllowGet);
             }
             else
-            {                
+            {
                 return Json(new { success = false, responseText = msg }, JsonRequestBehavior.AllowGet);
             }
         }
     }
+}

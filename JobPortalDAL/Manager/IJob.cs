@@ -10,5 +10,7 @@ namespace JobPortalDAL.Manager
     public interface IJob
     {
         Task<List<Job>> GetAllJobs();
+
+        Task<string> SeekerCount();
     }
 }
