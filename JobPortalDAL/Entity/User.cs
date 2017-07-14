@@ -9,15 +9,16 @@ namespace JobPortalDAL.Entity
 {
     public class User
     {
-        public int ID { get; set; }
+        public int UserID { get; set; }
 
+        public int RoleId { get; set; }
         public String Role { get; set; }
         public String Email { get; set; }
-        public String PhoneNumber { get; set; }
+        public String phone { get; set; }
         public string Password { get; set; }
 
         public HttpPostedFileBase file { get; set; }
-        public String ProfileImgPath { get; set; }
+        public String ProfileImage { get; set; }
 
         public DateTime? RegistrationDate { get; set; }
         public Boolean SMSActive { get; set; }

@@ -80,7 +80,8 @@
             </div>
             <div class="form-actions">
                 <label class="checkbox">
-                    <input type="checkbox" name="remember" value="1" /> Remember me
+                    @*<input type="checkbox" name="remember" value="1" /> Remember me*@
+                    @Html.EditorFor(model => model.RememberMe)
                 </label>
                 <button type="submit" class="btn green pull-right"> Login </button>
             </div>

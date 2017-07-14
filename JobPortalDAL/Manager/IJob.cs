@@ -12,5 +12,6 @@ namespace JobPortalDAL.Manager
         Task<List<Job>> GetAllJobs();
 
         Task<string> SeekerCount();
+        Boolean AddJob(Job jb, string token);
     }
 }

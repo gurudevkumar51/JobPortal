@@ -9,5 +9,6 @@ namespace JobPortalDAL.Manager
     public interface IAccount
     {
         string Login(string username, string pass);
+        Task<string> GetUserDetailsAsync(string token);
     }
 }

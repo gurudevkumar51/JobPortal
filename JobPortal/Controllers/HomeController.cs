@@ -28,7 +28,7 @@ namespace JobPortal.Controllers
         public ActionResult JobList()
         {
             return View();
-        }
+        }        
 
         public async Task<ActionResult> Jobs()
         {

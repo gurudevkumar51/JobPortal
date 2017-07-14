@@ -41,15 +41,37 @@
     <div class="header">
         <div class="container">
             <div class="logo">
-                <a href="index.html"><span>Web</span>phonix</a>
+                <a href='@Url.Action("Index","Home")'><span>Web</span>phonix</a>
             </div>
+            
             <div class="header-right">
-                <a class="account" href="@Url.Action("Index","User")">My Account</a>
-               <a href="@Url.Action("Index","Employer")"><span class="active uls-trigger">Employer Account</span></a> 
-                <span class="active uls-trigger">Select Test</span>               
+                @{
+                    if (HttpContext.Current.User.Identity.IsAuthenticated)
+                    {
+                        if (HttpContext.Current.User.IsInRole("admin"))
+                        {
+                        <a class="account" href="@Url.Action("Index", "Admin")">My Account</a>
+                        }
+                        if (HttpContext.Current.User.IsInRole("seeker"))
+                        {
+                        <a class="account" href="@Url.Action("Index", "User")">My Account</a>
+                        }
+                        if (HttpContext.Current.User.IsInRole("employer"))
+                        {
+                        <a class="account" href="@Url.Action("Index", "Employer")">My Account</a>
+                        }
+                        <a class="account" href="@Url.Action("Logout", "Account")">Logout</a>
+                    }
+                    else
+                    {
+                        <a class="account" href="@Url.Action("login", "Account")">Welcome Guest Login</a>
+                        }
+                    }
             </div>
+
         </div>
     </div>
+    
     <div class="@(ViewContext.RouteData.Values["action"].ToString() == "Index" ? "main-banner banner text-center" : "banner text-center")">
         <div class="container">
             <h1>Sell or Advertise   <span class="segment-heading">    anything online </span> with Resale</h1>

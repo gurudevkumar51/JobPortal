@@ -15,7 +15,7 @@ namespace JobPortalDAL.Entity
 
         public Nullable<int> JobTypeID { get; set; }
 
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public string CreatedDate { get; set; }
 
         public string JobDescription { get; set; }
 
@@ -25,7 +25,7 @@ namespace JobPortalDAL.Entity
 
         public Nullable<decimal> MaxExperienceRequired { get; set; }
 
-        public Nullable<System.DateTime> ExpireDate { get; set; }
+        public string ExpireDate { get; set; }
 
         public Nullable<bool> IsActive { get; set; }
 

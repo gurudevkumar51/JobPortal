@@ -8,15 +8,16 @@ using Newtonsoft.Json;
 using System.Web.Security;
 using JobPortalDAL.Common;
 using JobPortalDAL.DataAccess;
+using System.Net.Http;
 using JobPortalDAL.Manager;
 using System.Configuration;
 
 namespace JobPortal.Controllers
-{
-    [Authorize]
+{    
     public class AccountController : Controller
     {
         private IAccount acc;
+       // public string ApiUrl = ConfigurationManager.AppSettings["ApiUrl"].ToString();
 
         public AccountController()
         {
@@ -26,71 +27,83 @@ namespace JobPortal.Controllers
         [AllowAnonymous]
         public ActionResult login(string returnUrl)
         {
-            Login lgin = new Login();
-            if (Request.Cookies["MrLogin"] != null)
+            if (!User.Identity.IsAuthenticated)
             {
-                lgin.EmailId = Request.Cookies["MrLogin"].Values["Email"];
-                lgin.Password = Request.Cookies["MrLogin"].Values["Password"];
-                lgin.RememberMe = true;
+                Login lgin = new Login();
+                if (Request.Cookies["UDetails"] != null)
+                {
+                    lgin.EmailId = Request.Cookies["UDetails"].Values["Email"];
+                    lgin.Password = Request.Cookies["UDetails"].Values["Password"];
+                    lgin.RememberMe = true;
+                }
+                return View(lgin);
             }
-            return View(lgin);
+            else { return RedirectToAction("Index", "Home"); }                        
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult login(Login lgn, string returnUrl)
+        public async System.Threading.Tasks.Task<ActionResult> login(Login lgn, string returnUrl)
         {
-            string message = "";
-            
+            if (!ModelState.IsValid)
+            {
+                return View(lgn);
+            }
+
             var token = JsonConvert.DeserializeObject<Token>(acc.Login(lgn.EmailId, lgn.Password));
             token.userName = lgn.EmailId;
-            var v = Session["token"] = token.access_token;
 
-            if (v != null)
-            {
-                var json = JsonConvert.SerializeObject(v);
-                FormsAuthentication.SetAuthCookie(lgn.EmailId, lgn.RememberMe);
-                if (lgn.RememberMe)
+            if (token != null && token.access_token != "" && token.access_token != null)
+            {                
+                var result = JsonConvert.DeserializeObject<APIUserResponse>(await acc.GetUserDetailsAsync(token.access_token));                
+                if (result.responseText[0] != null)
                 {
-                    HttpCookie cookie = new HttpCookie("MrLogin", json);
-                    cookie.Values.Add("Email", lgn.EmailId);
-                    cookie.Values.Add("Password", lgn.Password);
-                    cookie.Expires.AddDays(15);
-                    Response.Cookies.Add(cookie);
-                }
+                    FormsAuthentication.SetAuthCookie(lgn.EmailId, false);
+                    var authTicket = new FormsAuthenticationTicket(1, lgn.EmailId, DateTime.Now, DateTime.Now.AddMinutes(20), lgn.RememberMe, result.responseText[0].Role);
+                    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                    var authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                    HttpContext.Response.Cookies.Add(authCookie);
 
-                if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
-                    && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
-                {
-                    return Redirect(returnUrl);
-                }
-                else
-                {
-                    return RedirectToAction("Index", "Home");
+                    var json = JsonConvert.SerializeObject(result.responseText[0]);
+                    HttpCookie Ucookie = new HttpCookie("LoggedUDetails", json);
+                    Ucookie.Expires.AddDays(15);
+                    Response.Cookies.Add(Ucookie);
+
+                    if (lgn.RememberMe)
+                    {
+                        HttpCookie cookie = new HttpCookie("UDetails");
+                        cookie.Values.Add("Email", lgn.EmailId);
+                        cookie.Values.Add("Password", lgn.Password);
+                        cookie.Values.Add("Token", token.access_token);
+                        cookie.Expires.AddDays(15);
+                        Response.Cookies.Add(cookie);
+                    }
+
+                    if (Url.IsLocalUrl(returnUrl) && returnUrl.Length > 1 && returnUrl.StartsWith("/")
+                        && !returnUrl.StartsWith("//") && !returnUrl.StartsWith("/\\"))
+                    {
+                        return Redirect(returnUrl);
+                    }
+                    else
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                 }
             }
             else
             {
-                message = "Invalid credential provided";
+                ModelState.AddModelError("", "Invalid login attempt.");
+                return View(lgn);
             }
-            ViewBag.Message = message;
-            return View();
+            return View(lgn);            
         }
 
-        public ActionResult LogOff()
+        [AllowAnonymous]
+        public ActionResult Logout()
         {
-            FormsAuthentication.SignOut();
-            if (Request.Cookies["MrLogin"] != null)
-            {
-                var user = new HttpCookie("MrLogin")
-                {
-                    Expires = DateTime.Now.AddDays(-1),
-                    Value = null
-                };
-                Response.Cookies.Add(user);
-            }
-            return RedirectToActionPermanent("login", "Account");
+            FormsAuthentication.SignOut();            
+            return RedirectToAction("login", "Account");
         }
 
         [HttpPost]
@@ -122,8 +135,7 @@ namespace JobPortal.Controllers
                 return Json(new { success = true, responseText = pp }, JsonRequestBehavior.AllowGet);
             }
             else
-            {
-                
+            {                
                 return Json(new { success = false, responseText = msg }, JsonRequestBehavior.AllowGet);
             }
         }

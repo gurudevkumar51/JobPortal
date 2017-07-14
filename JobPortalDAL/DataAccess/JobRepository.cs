@@ -17,7 +17,7 @@ namespace JobPortalDAL.DataAccess
     {
         //HttpClient client;
         
-        public static string url = ConfigurationManager.AppSettings["ApiUrl"].ToString();
+        public string url = ConfigurationManager.AppSettings["ApiUrl"].ToString();
         //public JobRepository()
         //{
         //    client = new HttpClient();
@@ -33,10 +33,19 @@ namespace JobPortalDAL.DataAccess
 
             if(responseData != string.Empty)
             {
-                var allJobs = JsonConvert.DeserializeObject<List<Job>>(responseData);
-                return allJobs;
+                var allJobs = JsonConvert.DeserializeObject<APIJobResponse>(responseData);
+                Job[] JobArray= allJobs.responseText;
+                
+                return JobArray.ToList();
             }
             return null;            
+        }
+
+        public Boolean AddJob(Job jb, string token)
+        {            
+            url = url + "api/Job/Add";
+            GenericClass.CallPostApi(url, token, JsonConvert.SerializeObject(jb));
+            return true;
         }
 
         public async Task<string> SeekerCount()

@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,110 @@ namespace JobPortalDAL.Common
     public static class GenericClass
     {
         public static string ApiUrl = ConfigurationManager.AppSettings["ApiUrl"].ToString();
+                
+        public static string GetToken(string url, string userName, string password)
+        {
+            var pairs = new List<KeyValuePair<string, string>>
+                    {
+                        new KeyValuePair<string, string>( "grant_type", "password" ),
+                        new KeyValuePair<string, string>( "username", userName ),
+                        new KeyValuePair<string, string> ( "Password", password )
+                    };
+            var content = new FormUrlEncodedContent(pairs);
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+            using (var client = new HttpClient())
+            {
+                var response = client.PostAsync(url + "Token", content).Result;
+                return response.Content.ReadAsStringAsync().Result;
+            }
+        }
+        //private static readonly HttpClient httpClient;
+        //For get method
+        public async static Task<string> CallApi(string url, string token)
+        {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var client = new HttpClient())
+            {
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    client.DefaultRequestHeaders.Clear();
+                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);                    
+                }
+                var response = await client.GetAsync(url);                
+                if(response.IsSuccessStatusCode)
+                {
+                    return response.Content.ReadAsStringAsync().Result;
+                }
+                return string.Empty;
+            }
+        }
+
+        //For post method
+        public static HttpContent CallPostApi(string url, string token, string job)
+        {
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            using (var httpClient = new HttpClient())
+            {
+                if (!string.IsNullOrWhiteSpace(token))
+                {
+                    httpClient.DefaultRequestHeaders.Clear();
+                    httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                }
+
+                var postTask = httpClient.PostAsJsonAsync(url, job);
+                postTask.Wait();
+
+                var result = postTask.Result;
+                if (result.IsSuccessStatusCode)
+                {
+                    return result.Content;
+                }
+
+                //httpClient.BaseAddress = new Uri(url);
+                //httpClient.DefaultRequestHeaders.Accept.Clear();
+                //httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                //var postTask = await httpClient.PostAsJsonAsync(url, JsonData);
+
+                //var result = postTask.Content;
+                //if (result.IsSuccessStatusCode)
+                //{
+                //    return 
+                //}
+
+                //var postTask = client.PostAsJsonAsync<Job>("student", student);
+                //postTask.Wait();
+                //var response = client.PostAsync(url,JsonData);
+                //if (response.IsCompleted)
+                //{
+                //    return response.Status.;
+                //}
+                return null;
+            }
+        }
+
+        //public static HttpClient ApiMethodCall()
+        //{
+        //    HttpClient cons = new HttpClient();
+        //    cons.BaseAddress = new Uri(ApiUrl);
+        //    cons.DefaultRequestHeaders.Accept.Clear();
+        //    cons.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        //    return cons;
+        //}
+
+        //public static async Task<Boolean> MyAPIPost(HttpClient cons)
+        //{
+        //    using (cons)
+        //    {
+        //        var tag = new tblTag { tagName = "jQuery", tagDescription = "This tag is all about jQuery" };
+        //        HttpResponseMessage res = await cons.PostAsJsonAsync("api/tblTags", tag);
+        //        res.EnsureSuccessStatusCode();
+        //        if (res.IsSuccessStatusCode)
+        //        {
+        //            return true;
+        //        }
+        //    }
+        //}
 
         public static string Hash(string value)
         {
@@ -59,44 +164,6 @@ namespace JobPortalDAL.Common
             return month;
         }
 
-        public static string GetToken(string url, string userName, string password)
-        {
-            var pairs = new List<KeyValuePair<string, string>>
-                    {
-                        new KeyValuePair<string, string>( "grant_type", "password" ),
-                        new KeyValuePair<string, string>( "username", userName ),
-                        new KeyValuePair<string, string> ( "Password", password )
-                    };
-            var content = new FormUrlEncodedContent(pairs);
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                var response = client.PostAsync(url + "Token", content).Result;
-                return response.Content.ReadAsStringAsync().Result;
-            }
-        }
-
-        public async static Task<string> CallApi(string url, string token)
-        {
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
-            using (var client = new HttpClient())
-            {
-                if (!string.IsNullOrWhiteSpace(token))
-                {
-                    //var t = JsonConvert.DeserializeObject<Token>(token);
-
-                    client.DefaultRequestHeaders.Clear();
-                    client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
-                    
-                }
-                var response = await client.GetAsync(url);
-                if(response.IsSuccessStatusCode)
-                {
-                    return response.Content.ReadAsStringAsync().Result;
-                }
-                return string.Empty;
-            }
-        }
 
         //public static Boolean sendMail(EmailTemplate mailDetails, SmtpMail smtpDetails)
         //{
